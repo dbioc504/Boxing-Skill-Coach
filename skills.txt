@@ -1,0 +1,13 @@
+B:long jab combos
+D:combo-angle-combo
+B:Shuffle&Tick
+D:LEFT HOOK(S)
+P:Cut Off Ring
+P:feints
+P:stab
+D:combos+rolls
+P:forward shuffle
+B:head movement
+P:flurries
+B:rangefinding
+B:Footwork
