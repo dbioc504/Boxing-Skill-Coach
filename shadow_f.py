@@ -158,6 +158,54 @@ def display_skills(skill_dict):
 
 
 # more of an algorithm
-def specialized_loop(skill,skill_dict):
-  
+def specialized_loop(skill_dict):
+  # ask user to select area of focus
+  focus_skill_prompt = "Select the category you want to focus on:\n" \
+  "P) Pressure\tB) Boxing\tD) Dogfighting\tC) Cancel\t"
+  focus_skill_list = ["P","B","D","C"]
+  focus_skill_entry = menu.proper_input(focus_skill_prompt,focus_skill_list)
+  focus_skill = ""
+  match focus_skill_entry:
+    case "P":
+      focus_skill = "Pressure"
+    case "B":
+      focus_skill = "Boxing"
+    case "D":
+      focus_skill = "Dogwork"
+    case "C":
+      menu.app_menu()
+      return
+  # ask user how many number of rounds
+  round_no_prompt = "Rounds: "
+  round_no = menu.proper_input(round_no_prompt, list(range(-50,50)), input_type=int)
+  # TODO calculate how many times the skill will be distributed
+  focused_rounds = int(round_no * 0.7)
+  other_rounds = round_no - focused_rounds
+  # TODO incoporate an algorithm to randomize the skills but make sure \
+  round_choices = [focus_skill] * focused_rounds
+  other_skills = [skill for skill in list(skill_dict.keys()) if skill != focus_skill]
+  round_choices += random.choices(other_skills,k=other_rounds)
+  # for the focus skill takes up 70% of the rounds
+  random.shuffle(round_choices)
+  used_skills = {"Pressure": [], "Boxing": [], "Dogwork": []}
+  temp_round = 1
+  # skill loop
+  for skill in round_choices:
+    # skill select
+    curr_round = skill_select(skill,skill_dict)
+    curr_skill = curr_round[0]
+    curr_tech = curr_round[1]
+    print(f"Round {temp_round}:\n{curr_skill}:\t{curr_tech}\n")
+    temp_round += 1
+    # storing used techniques in used_skills
+    used_update_value = used_skills.get(curr_skill)
+    used_update_value.extend(curr_tech)
+    used_skills.update({curr_skill:used_update_value})
+    # removing current skills from skill dictionary
+    tech_value = skill_dict.get(curr_skill)
+    skill_dict.update({curr_skill:[x for x in tech_value if x not in curr_tech]})
+    # refilling list if empty
+    if len(skill_dict.get(curr_skill)) < 1:
+      skill_dict.update({curr_skill:used_skills.get(curr_skill)})
+      used_skills.update({curr_skill:[]})
   return

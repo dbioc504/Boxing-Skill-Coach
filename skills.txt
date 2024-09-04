@@ -11,3 +11,4 @@ B:head movement
 P:flurries
 B:rangefinding
 B:Footwork
+P:double/triple ticks
